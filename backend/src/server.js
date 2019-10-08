@@ -1,6 +1,8 @@
 const express = require('express');
 const routes = require('./routes');
 const mongoose = require('mongoose');
+const cors = require('cors');
+const path = require('path');
 
 const app = express();
 
@@ -15,6 +17,9 @@ mongoose.connect('mongodb+srv://omnistack:horses@cluster0-omfry.mongodb.net/omni
 //req.params == acessar route params    --- Pegar os dados que vem junto com a URL (edição e delete)
 //req.body == acessar corpo da requisição --- para criação e edição de registros
 
+app.use(cors());
 app.use(express.json());
+app.use('/files', express.static(path.resolve(__dirname, '..', 'uploads')));
 app.use(routes);
+
 app.listen(3333);
