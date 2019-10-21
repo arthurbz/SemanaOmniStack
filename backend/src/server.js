@@ -4,11 +4,33 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
 
-const app = express();
+const socketio = require('socket.io');
+const http = require('http');
 
-mongoose.connect('mongodb+srv://omnistack:horses@cluster0-omfry.mongodb.net/omniDB?retryWrites=true&w=majority', {
+const app = express();
+const server = http.Server(app);
+const io = socketio(server);
+
+const connectedUsers = {};
+
+mongoose.connect('mongodb+srv://omnistack:omnistack@cluster0-omfry.mongodb.net/test?retryWrites=true&w=majority', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+})
+
+
+io.on('connection', socket => {
+    const { user_id } = socket.handshake.query;
+
+    connectedUsers[user_id] = socket.id;
+});
+
+
+app.use((req, res, next) => {
+    req.io = io;
+    req.connectedUsers = connectedUsers;
+
+    return next();
 })
 
 //GET, POST, PUT, DELETE
@@ -22,4 +44,4 @@ app.use(express.json());
 app.use('/files', express.static(path.resolve(__dirname, '..', 'uploads')));
 app.use(routes);
 
-app.listen(3333);
+server.listen(3333);

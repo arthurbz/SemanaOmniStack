@@ -1,5 +1,4 @@
 import React, { useState, useMemo } from 'react';
-import aí from '../../services/api';
 
 import camera from '../../assets/camera.svg';
 import './styles.css';
