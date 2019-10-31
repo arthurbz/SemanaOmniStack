@@ -11,7 +11,7 @@ export default function Login({ navigation }) {
     useEffect(() => {
         AsyncStorage.getItem('user').then(user => {
             if (user) {
-                navigation.navigate('List');
+                navigation.navigate('Login');
             }
         })
     }, [])
@@ -56,7 +56,7 @@ export default function Login({ navigation }) {
                     onChangeText={setTechs}
                 />
 
-                <TouchableOpacity onPress={handleSubmit}style={styles.cancel_button}>
+                <TouchableOpacity onPress={handleSubmit}style={styles.button}>
                     <Text style={styles.buttonText}>Encontrar spots</Text>
                 </TouchableOpacity>
             </View>
